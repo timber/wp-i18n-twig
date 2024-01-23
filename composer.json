@@ -1,5 +1,7 @@
 {
     "name": "timber/wp-i18n-twig",
+    "description": "WordPress translations extraction for Twig files with WP-CLI",
+    "licence": "MIT",
     "authors": [
         {
             "name": "Nicolas Lemoine",
