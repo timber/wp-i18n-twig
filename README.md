@@ -2,11 +2,11 @@
 
 Parsing WordPress translations in Twig/Timber templates has always been quirky and not very convenient. Especially since WordPress grabs translations from multiple sources (theme stylesheet, {block,theme}.json, block editor JS, PHP files).
 
-Since WP-CLI is the recommanded way to create/update POT files, `timber/wp-i18n-twig` provides (almost native) Twig translation extraction by overriding the default `wp i18n make-pot`.
+Since WP-CLI is the recommended way to create/update POT files, `timber/wp-i18n-twig` provides (almost native) Twig translation extraction by overriding the default `wp i18n make-pot`.
 
 ## Install
 
-Because WP-CLI default commands are not meant to be overriden, there are two working ways to install `timber/wp-i18n-twig`:
+Because WP-CLI default commands are not meant to be overridden, there are two working ways to install `timber/wp-i18n-twig`:
 
 ### Global
 
@@ -64,7 +64,7 @@ Adding translators comments in your Twig templates works like it would in PHP, p
 
 ## Limitations
 
-To make this package work in any Twig environement, templates are not compiled to PHP but only parsed. This main benefit is that it's (almost) configuration agnostic (custom filters, functions, template location).
+To make this package work in any Twig environment, templates are not compiled to PHP but only parsed. This main benefit is that it's (almost) configuration agnostic (custom filters, functions, template location).
 
 However, since Twig is highly configurable, there are still some (minor) limitations.
 
