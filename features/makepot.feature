@@ -12,7 +12,7 @@ Feature: Generate a POT file of a WordPress project
     When I run `wp i18n make-pot foo-theme foo-theme.pot --skip-twig`
     Then STDOUT should be:
       """
-      Success: POT file successfully generated!
+      Success: POT file successfully generated.
       """
     And the foo-theme.pot file should not contain:
       """
@@ -58,7 +58,7 @@ Feature: Generate a POT file of a WordPress project
     When I run `wp i18n make-pot foo-theme`
     Then STDOUT should be:
       """
-      Success: POT file successfully generated!
+      Success: POT file successfully generated.
       """
     And the foo-theme/foo-theme.pot file should exist
     And the foo-theme/foo-theme.pot file should contain:
@@ -272,7 +272,7 @@ Feature: Generate a POT file of a WordPress project
     When I run `wp i18n make-pot foo-theme`
     Then STDOUT should be:
       """
-      Success: POT file successfully generated!
+      Success: POT file successfully generated.
       """
     And the foo-theme/foo-theme.pot file should exist
     And the foo-theme/foo-theme.pot file should contain:
