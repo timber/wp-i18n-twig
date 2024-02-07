@@ -1,5 +1,7 @@
 # wp-i18n-twig
 
+[![tests](https://github.com/timber/wp-i18n-twig/actions/workflows/testing.yml/badge.svg)](https://github.com/timber/wp-i18n-twig/actions/workflows/testing.yml)
+
 Parsing WordPress translations in Twig/Timber templates has always been quirky and not very convenient. Especially since WordPress grabs translations from multiple sources (theme stylesheet, {block,theme}.json, block editor JS, PHP files).
 
 Since WP-CLI is the recommended way to create/update POT files, `timber/wp-i18n-twig` provides (almost native) Twig translation extraction by overriding the default `wp i18n make-pot`.
