@@ -4,7 +4,7 @@
 
 Parsing WordPress translations in Twig/Timber templates has always been quirky and not very convenient. Especially since WordPress started grabbing translations from multiple sources (theme stylesheet, {block,theme}.json, block editor JS, PHP files) and now also outputing in multiple formats (po, [php](https://make.wordpress.org/core/2024/02/27/i18n-improvements-6-5-performant-translations/)).
 
-WP-CLI besing the recommended way to create/update POT files, `timber/wp-i18n-twig` provides (almost native) Twig translation extraction by overriding the default `wp i18n make-pot`.
+WP-CLI being the recommended way to create/update POT files, `timber/wp-i18n-twig` provides (almost native) Twig translation extraction by overriding the default `wp i18n make-pot`.
 
 ## Install
 
