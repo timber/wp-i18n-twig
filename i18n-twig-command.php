@@ -21,7 +21,7 @@ if ( ! function_exists( 'wp_i18n_twig_get_longdesc' ) ) {
 			$doc_comment = $make_pot_ref->getMethod( '__invoke' )->getDocComment();
 			$needle      = "\t * [--skip-blade]\n";
 			$replace     = "\t * [--skip-twig]\n\t * : Skips Twig string extraction.\n\t *\n" . $needle;
-			return str_replace( $needle, $replace, $doc_comment );
+			return str_replace( $needle, $replace, (string) $doc_comment );
 		} catch ( ReflectionException $e ) {
 			return false;
 		}

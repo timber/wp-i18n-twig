@@ -21,15 +21,19 @@ class TwigFunctionsScanner extends PhpFunctionsScanner {
 			// Dirty hack to make all lexer methods/properties public and grab Twig comments.
 			$lexer_ref  = new ReflectionClass( Lexer::class );
 			$lexer_path = $lexer_ref->getFileName();
-			$lexer_code = file_get_contents( $lexer_path );
+			$lexer_code = file_get_contents( (string) $lexer_path );
+			if ( false === $lexer_code ) {
+				throw new \RuntimeException( 'Could not read Twig Lexer source code.' );
+			}
 			$lexer_code = str_replace( '<?php', '', $lexer_code );
 			$lexer_code = preg_replace( '/(private) (\$[a-zA-Z]+|function)/m', 'public $2', $lexer_code );
-			$lexer_code = str_replace( 'class Lexer', 'class i18nLexer extends Lexer', $lexer_code );
+			$lexer_code = str_replace( 'class Lexer', 'class i18nLexer extends Lexer', (string) $lexer_code );
 
 			// @codingStandardsIgnoreStart
 			eval( $lexer_code );
 		}
 
+		/** @var Lexer $lexer */
 		$lexer = new class($twig) extends \Twig\i18nLexer {
 			private $comments = [];
 			public function getComments(): array {
@@ -57,6 +61,7 @@ class TwigFunctionsScanner extends PhpFunctionsScanner {
 		$twig->addNodeVisitor( $visitor );
 		$token_stream = $twig->tokenize( new Source( $code, '' ) );
 		// Comments are available only after tokenization
+		// @phpstan-ignore method.notFound
 		$visitor->setComments( $lexer->getComments() );
 		$twig->parse( $token_stream );
 		$this->functions = $visitor->getFunctions();

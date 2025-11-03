@@ -2,6 +2,7 @@
 
 namespace Timber\WpI18nTwig\Twig\NodeVisitor;
 
+use ArrayIterator;
 use Timber\WpI18nTwig\TwigCodeExtractor;
 use Twig\Environment;
 use Twig\Node\Expression\ConstantExpression;
@@ -9,11 +10,25 @@ use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Node;
 use Twig\NodeVisitor\AbstractNodeVisitor;
 
+// @phpstan-ignore class.extendsDeprecatedClass
 final class TranslationNodeVisitor extends AbstractNodeVisitor {
 
 	private $functions = [];
-	private $comments  = [];
 
+	/**
+	 * @var list<array{
+	 *   'comment': string,
+	 *   'lineno': int
+	 * }>
+	 */
+	private $comments = [];
+
+	/**
+	 * @param list<array{
+	 *   'comment': string,
+	 *   'lineno': int
+	 * }> $comments
+	 */
 	public function setComments( array $comments ) {
 		$this->comments = $comments;
 	}
@@ -29,7 +44,7 @@ final class TranslationNodeVisitor extends AbstractNodeVisitor {
 		) {
 			$node_arguments = $node->getNode( 'arguments' );
 
-			if ( $node_arguments->getIterator()->current() instanceof ConstantExpression ) {
+			if ( $node_arguments->getIterator() instanceof ArrayIterator && $node_arguments->getIterator()->current() instanceof ConstantExpression ) {
 				$this->functions[] = [
 					$node->getAttribute( 'name' ), // function name
 					$node->getTemplateLine(), // line
@@ -57,8 +72,8 @@ final class TranslationNodeVisitor extends AbstractNodeVisitor {
 	}
 
 	private function getReadMessageFromArguments( Node $arguments, int $index ): ?string {
-		if ( $arguments->hasNode( $index ) ) {
-			$argument = $arguments->getNode( $index );
+		if ( $arguments->hasNode( (string) $index ) ) {
+			$argument = $arguments->getNode( (string) $index );
 		} else {
 			return null;
 		}
@@ -75,8 +90,8 @@ final class TranslationNodeVisitor extends AbstractNodeVisitor {
 	}
 
 	private function getReadDomainFromArguments( Node $arguments, int $index ): ?string {
-		if ( $arguments->hasNode( $index ) ) {
-			$argument = $arguments->getNode( $index );
+		if ( $arguments->hasNode( (string) $index ) ) {
+			$argument = $arguments->getNode( (string) $index );
 		} else {
 			return null;
 		}
@@ -98,7 +113,10 @@ final class TranslationNodeVisitor extends AbstractNodeVisitor {
 	 * Will either return the comment on the same line as the function call, or the line before.
 	 *
 	 * @param Node $node
-	 * @return void
+	 * @return list<array{
+	 *   'comment': string,
+	 *   'lineno': int
+	 * }>|null
 	 */
 	private function getComment( Node $node ) {
 		$lineno = $node->getTemplateLine();

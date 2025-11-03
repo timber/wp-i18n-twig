@@ -51,6 +51,7 @@ class MakePotCommand extends BaseMakePotCommand {
 				}
 
 				if ( $this->subtract_and_merge ) {
+					/** @var Translation $translation */
 					$translation = $translations[ $exception_translation->getId() ];
 					$exception_translation->mergeWith( $translation );
 				}

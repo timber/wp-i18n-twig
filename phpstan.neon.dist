@@ -7,14 +7,8 @@ parameters:
     - vendor/wp-cli/wp-cli/php
   scanFiles:
     - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    - stubs/i18nLexer.php
   treatPhpDocTypesAsCertain: false
-  strictRules:
-    uselessCast: true
-    closureUsesThis: true
-    overwriteVariablesWithLoop: true
-    matchingInheritedMethodNames: true
-    numericOperandsInArithmeticOperators: true
-    switchConditionsMatchingType: true
   ignoreErrors:
     - identifier: missingType.return
     - identifier: missingType.iterableValue

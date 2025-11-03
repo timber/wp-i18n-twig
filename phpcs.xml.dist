@@ -5,6 +5,9 @@
     <!-- What to scan. -->
     <file>.</file>
 
+    <!-- Exclude stubs directory (PHPStan stubs). -->
+    <exclude-pattern>/stubs/*</exclude-pattern>
+
     <!-- Show progress. -->
     <arg value="p"/>
 

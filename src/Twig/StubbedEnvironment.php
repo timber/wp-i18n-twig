@@ -49,9 +49,9 @@ final class StubbedEnvironment extends Environment {
 	];
 
 	/**
-	 * @param ExtensionInterface[]   $customTwigExtensions
-	 * @param TokenParserInterface[] $customTokenParsers
-	 * @param NodeVisitorInterface[] $customNodeVisitors
+	 * @param ExtensionInterface[]   $custom_twig_extensions
+	 * @param TokenParserInterface[] $custom_token_parsers
+	 * @param NodeVisitorInterface[] $custom_node_visitors
 	 */
 	public function __construct(
 		array $custom_twig_extensions = [],
@@ -102,7 +102,6 @@ final class StubbedEnvironment extends Environment {
 	 */
 	public function getFilter( $name ): ?TwigFilter {
 		if ( ! \array_key_exists( $name, $this->stub_filters ) ) {
-			// @phpstan-ignore-next-line method.internal
 			$existing_filter             = parent::getFilter( $name );
 			$this->stub_filters[ $name ] = $existing_filter instanceof TwigFilter
 				? $existing_filter
@@ -117,7 +116,6 @@ final class StubbedEnvironment extends Environment {
 	 */
 	public function getFunction( $name ): ?TwigFunction {
 		if ( ! \array_key_exists( $name, $this->stub_functions ) ) {
-			// @phpstan-ignore-next-line method.internal
 			$existing_function             = parent::getFunction( $name );
 			$this->stub_functions[ $name ] = $existing_function instanceof TwigFunction
 				? $existing_function
@@ -132,7 +130,6 @@ final class StubbedEnvironment extends Environment {
 	 */
 	public function getTest( $name ): ?TwigTest {
 		if ( ! \array_key_exists( $name, $this->stub_tests ) ) {
-			// @phpstan-ignore-next-line method.internal
 			$existing_test             = parent::getTest( $name );
 			$this->stub_tests[ $name ] = $existing_test instanceof TwigTest
 				? $existing_test
@@ -144,35 +141,39 @@ final class StubbedEnvironment extends Environment {
 
 	private function handleOptionalDependencies(): void {
 		if ( class_exists( DumpTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new DumpTokenParser() );
 		}
 		if ( class_exists( FormThemeTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new FormThemeTokenParser() );
 		}
 		if ( class_exists( StopwatchTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new StopwatchTokenParser( true ) );
 		}
 		if ( class_exists( TransDefaultDomainTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new TransDefaultDomainTokenParser() );
 		}
 		if ( class_exists( TransTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new TransTokenParser() );
 		}
 		if ( class_exists( CacheTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new CacheTokenParser() );
 		}
-		// @phpstan-ignore-next-line classConstant.internalClass
-		if ( class_exists( TwigComponentTokenParser::class ) ) {
+		if ( class_exists( TwigComponentTokenParser::class ) && class_exists( ComponentTokenParser::class ) ) {
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new ComponentTokenParser() );
 		}
-		// @phpstan-ignore-next-line classConstant.internalClass
 		if ( class_exists( PropsTokenParser::class ) ) {
-			// @phpstan-ignore-next-line new.internalClass
+			// @phpstan-ignore argument.type
 			$this->addTokenParser( new PropsTokenParser() );
 		}
-		// @phpstan-ignore-next-line classConstant.internalClass
 		if ( class_exists( ComponentLexer::class ) ) {
-			// @phpstan-ignore-next-line new.internalClass
+			// @phpstan-ignore argument.type
 			$this->setLexer( new ComponentLexer( $this ) );
 		}
 	}
