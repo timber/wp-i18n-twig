@@ -16,8 +16,10 @@
     },
     "require-dev": {
         "slevomat/coding-standard": "^8.14",
-        "wp-cli/wp-cli-tests": "^4.2"
+        "wp-cli/wp-cli-tests": "^5"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Timber\\WpI18nTwig\\": "src/"
@@ -29,7 +31,8 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ergebnis/composer-normalize": true
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
         }
     },
     "scripts": {
@@ -40,6 +43,7 @@
         "phpcs": "run-phpcs-tests",
         "phpunit": "run-php-unit-tests",
         "prepare-tests": "install-package-tests",
+        "phpstan": "run-phpstan-tests",
         "test": [
             "@lint",
             "@phpcs",
