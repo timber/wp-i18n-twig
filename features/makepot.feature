@@ -1,4 +1,4 @@
-Feature: Generate a POT file of a WordPress project
+Feature: Generate a POT file of a WordPress project with Twig files
 
   Background:
     Given a WP install
@@ -255,7 +255,7 @@ Feature: Generate a POT file of a WordPress project
   Scenario: Extract translator comments
     Given I run `echo "\t"`
     And save STDOUT as {TAB}
-    Given an empty foo-theme directory
+    And an empty foo-theme directory
     And a foo-theme/views/index.twig file:
       """
       {# translators: Translators 1! #}
