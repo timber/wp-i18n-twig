@@ -1,8 +1,7 @@
 {
     "name": "timber/wp-i18n-twig",
-    "type": "wp-cli-package",
     "description": "WordPress translations extraction for Twig files with WP-CLI",
-    "licence": "MIT",
+    "type": "wp-cli-package",
     "authors": [
         {
             "name": "Nicolas Lemoine",
@@ -41,14 +40,15 @@
         "lint": "run-linter-tests",
         "phpcbf": "run-phpcbf-cleanup",
         "phpcs": "run-phpcs-tests",
+        "phpstan": "run-phpstan-tests",
         "phpunit": "run-php-unit-tests",
         "prepare-tests": "install-package-tests",
-        "phpstan": "run-phpstan-tests",
         "test": [
             "@lint",
             "@phpcs",
             "@phpunit",
             "@behat"
         ]
-    }
+    },
+    "licence": "MIT"
 }
