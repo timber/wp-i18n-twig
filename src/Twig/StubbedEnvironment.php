@@ -7,23 +7,26 @@ use Symfony\Bridge\Twig\TokenParser\FormThemeTokenParser;
 use Symfony\Bridge\Twig\TokenParser\StopwatchTokenParser;
 use Symfony\Bridge\Twig\TokenParser\TransDefaultDomainTokenParser;
 use Symfony\Bridge\Twig\TokenParser\TransTokenParser;
+use Symfony\UX\TwigComponent\Twig\ComponentLexer;
 use Symfony\UX\TwigComponent\Twig\ComponentTokenParser as TwigComponentTokenParser;
 use Symfony\UX\TwigComponent\Twig\PropsTokenParser;
 use Twig\Environment;
 use Twig\Extension\ExtensionInterface;
 use Twig\Extra\Cache\TokenParser\CacheTokenParser;
 use Twig\Loader\ArrayLoader;
+use Twig\NodeVisitor\NodeVisitorInterface;
 use Twig\TokenParser\TokenParserInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\TwigTest;
+use TwigCsFixer\Environment\Parser\ComponentTokenParser;
 
 /**
  * All credits goes to Vincent Langlet for this class.
  *
  * Provide stubs for all filters, functions, tests and tags that are not defined in twig's core.
  *
- * @see https://github.com/VincentLanglet/Twig-CS-Fixer/blob/35a824ec5c93189d983f5e95b85ab9b4f2ee59c8/src/Environment/StubbedEnvironment.php
+ * @see https://github.com/VincentLanglet/Twig-CS-Fixer/blob/6b236c344260d199c3f52fbc8fc9f4b1b4a19bb3/src/Environment/StubbedEnvironment.php
  */
 final class StubbedEnvironment extends Environment {
 
@@ -46,12 +49,14 @@ final class StubbedEnvironment extends Environment {
 	];
 
 	/**
-	 * @param ExtensionInterface[]   $custom_twig_extensions
-	 * @param TokenParserInterface[] $custom_token_parsers
+	 * @param ExtensionInterface[]   $customTwigExtensions
+	 * @param TokenParserInterface[] $customTokenParsers
+	 * @param NodeVisitorInterface[] $customNodeVisitors
 	 */
 	public function __construct(
 		array $custom_twig_extensions = [],
-		array $custom_token_parsers = []
+		array $custom_token_parsers = [],
+		array $custom_node_visitors = []
 	) {
 		parent::__construct( new ArrayLoader() );
 
@@ -64,6 +69,32 @@ final class StubbedEnvironment extends Environment {
 		foreach ( $custom_token_parsers as $custom_token_parser ) {
 			$this->addTokenParser( $custom_token_parser );
 		}
+
+		foreach ( $custom_node_visitors as $custom_node_visitor ) {
+			$this->addNodeVisitor( $custom_node_visitor );
+		}
+	}
+
+	/**
+	 * Avoid dependency to composer/semver for twig version comparison.
+	 */
+	public static function satisfiesTwigVersion( int $major, int $minor = 0, int $patch = 0 ): bool {
+		$version = explode( '.', self::VERSION );
+
+		if ( $major < $version[0] ) {
+			return true;
+		}
+		if ( $major > $version[0] ) {
+			return false;
+		}
+		if ( $minor < $version[1] ) {
+			return true;
+		}
+		if ( $minor > $version[1] ) {
+			return false;
+		}
+
+		return $version[2] >= $patch;
 	}
 
 	/**
@@ -71,6 +102,7 @@ final class StubbedEnvironment extends Environment {
 	 */
 	public function getFilter( $name ): ?TwigFilter {
 		if ( ! \array_key_exists( $name, $this->stub_filters ) ) {
+			// @phpstan-ignore-next-line method.internal
 			$existing_filter             = parent::getFilter( $name );
 			$this->stub_filters[ $name ] = $existing_filter instanceof TwigFilter
 				? $existing_filter
@@ -85,6 +117,7 @@ final class StubbedEnvironment extends Environment {
 	 */
 	public function getFunction( $name ): ?TwigFunction {
 		if ( ! \array_key_exists( $name, $this->stub_functions ) ) {
+			// @phpstan-ignore-next-line method.internal
 			$existing_function             = parent::getFunction( $name );
 			$this->stub_functions[ $name ] = $existing_function instanceof TwigFunction
 				? $existing_function
@@ -99,7 +132,7 @@ final class StubbedEnvironment extends Environment {
 	 */
 	public function getTest( $name ): ?TwigTest {
 		if ( ! \array_key_exists( $name, $this->stub_tests ) ) {
-			/** @psalm-suppress InternalMethod */
+			// @phpstan-ignore-next-line method.internal
 			$existing_test             = parent::getTest( $name );
 			$this->stub_tests[ $name ] = $existing_test instanceof TwigTest
 				? $existing_test
@@ -128,11 +161,19 @@ final class StubbedEnvironment extends Environment {
 		if ( class_exists( CacheTokenParser::class ) ) {
 			$this->addTokenParser( new CacheTokenParser() );
 		}
+		// @phpstan-ignore-next-line classConstant.internalClass
 		if ( class_exists( TwigComponentTokenParser::class ) ) {
 			$this->addTokenParser( new ComponentTokenParser() );
 		}
+		// @phpstan-ignore-next-line classConstant.internalClass
 		if ( class_exists( PropsTokenParser::class ) ) {
+			// @phpstan-ignore-next-line new.internalClass
 			$this->addTokenParser( new PropsTokenParser() );
+		}
+		// @phpstan-ignore-next-line classConstant.internalClass
+		if ( class_exists( ComponentLexer::class ) ) {
+			// @phpstan-ignore-next-line new.internalClass
+			$this->setLexer( new ComponentLexer( $this ) );
 		}
 	}
 }
