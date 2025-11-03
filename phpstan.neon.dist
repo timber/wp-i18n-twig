@@ -1,0 +1,22 @@
+parameters:
+  level: 9
+  paths:
+    - src
+    - i18n-twig-command.php
+  scanDirectories:
+    - vendor/wp-cli/wp-cli/php
+  scanFiles:
+    - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+  treatPhpDocTypesAsCertain: false
+  strictRules:
+    uselessCast: true
+    closureUsesThis: true
+    overwriteVariablesWithLoop: true
+    matchingInheritedMethodNames: true
+    numericOperandsInArithmeticOperators: true
+    switchConditionsMatchingType: true
+  ignoreErrors:
+    - identifier: missingType.return
+    - identifier: missingType.iterableValue
+    - identifier: missingType.parameter
+    - identifier: missingType.property
