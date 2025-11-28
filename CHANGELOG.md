@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0](https://github.com/timber/wp-i18n-twig/compare/v1.0.0...v1.1.0) (2025-11-28)
+
+
+### Features
+
+* Update `StubbedEnvironment` ([71d5f19](https://github.com/timber/wp-i18n-twig/commit/71d5f19ef4a5ffc7c3948681dcd29748b8ae080b))
+
+
+### Miscellaneous Chores
+
+* Add phpstan config ([1079601](https://github.com/timber/wp-i18n-twig/commit/1079601694d236d6959bae1330a0a33bcec42b77))
+* Fix duplicate feature name ([df25bcf](https://github.com/timber/wp-i18n-twig/commit/df25bcfa45bc1e99dbec6ce7a0621de682d19e3f))
+* Fix PHPStan issues ([88a2f07](https://github.com/timber/wp-i18n-twig/commit/88a2f07bb26f970bff5962a6d5c1bc67668103d6))
+* Normalize `composer.json` ([6e161d1](https://github.com/timber/wp-i18n-twig/commit/6e161d1402d964accd1a86b5cfa1eb3f909cf349))
+* Update `wp-cli/wp-cli-tests` ([05f1ddc](https://github.com/timber/wp-i18n-twig/commit/05f1ddcc1259ddc809f92b531a7ac35d59e7317a))
+
 ## [1.0.0](https://github.com/timber/wp-i18n-twig/compare/0.1.0...v1.0.0) (2024-04-25)
 
 
