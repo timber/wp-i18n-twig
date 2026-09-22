@@ -79,6 +79,27 @@ class TwigFunctionsScannerTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Only a marker touching the closing tag is syntax. Anything separated from it by
+	 * whitespace is part of the comment.
+	 */
+	public function testKeepsMarkerCharactersThatArePartOfTheComment(): void {
+		$this->assertSame(
+			'translators: separator, e.g. -',
+			$this->commentFor( "{# translators: separator, e.g. - #}\n{{ __( 'hello', 'foo' ) }}" )
+		);
+
+		$this->assertSame(
+			'translators: approximately ~',
+			$this->commentFor( "{# translators: approximately ~ #}\n{{ __( 'hello', 'foo' ) }}" )
+		);
+
+		$this->assertSame(
+			'translators: separator, e.g. -',
+			$this->commentFor( "{# translators: separator, e.g. -\n#} {{ __( 'hello', 'foo' ) }}" )
+		);
+	}
+
 	public function testIgnoresCommentsWithoutTheTranslatorsPrefix(): void {
 		$this->assertNull(
 			$this->commentFor( "{# just a note #}\n{{ __( 'hello', 'foo' ) }}" )
