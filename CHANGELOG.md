@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.1](https://github.com/timber/wp-i18n-twig/compare/v1.1.0...v1.1.1) (2026-09-22)
+
+
+### Bug Fixes
+
+* Keep trailing dashes and tildes in translator comments ([8fe1292](https://github.com/timber/wp-i18n-twig/commit/8fe12924e73aa3d9724ba4820b6733ea60c6f06e))
+* Support Twig 3.29 lexComment() signature ([e3f5036](https://github.com/timber/wp-i18n-twig/commit/e3f5036d896dc06d66236eb639241dfa43b0d52d)), closes [#10](https://github.com/timber/wp-i18n-twig/issues/10)
+
+
+### Miscellaneous Chores
+
+* Declare PHP 8.1 minimum and fix license key ([e495aaa](https://github.com/timber/wp-i18n-twig/commit/e495aaadca16b8594875989ac9a1dd53951c711f))
+
 ## [1.1.0](https://github.com/timber/wp-i18n-twig/compare/v1.0.0...v1.1.0) (2025-11-28)
 
 
