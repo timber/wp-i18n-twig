@@ -2,6 +2,7 @@
     "name": "timber/wp-i18n-twig",
     "description": "WordPress translations extraction for Twig files with WP-CLI",
     "type": "wp-cli-package",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nicolas Lemoine",
@@ -10,6 +11,7 @@
         }
     ],
     "require": {
+        "php": ">=8.1",
         "twig/twig": "^3.0",
         "wp-cli/i18n-command": "^2.5"
     },
@@ -54,6 +56,5 @@
             "@phpunit",
             "@behat"
         ]
-    },
-    "licence": "MIT"
+    }
 }
