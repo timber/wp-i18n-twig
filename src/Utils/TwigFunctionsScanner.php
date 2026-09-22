@@ -68,12 +68,18 @@ class TwigFunctionsScanner extends PhpFunctionsScanner {
 				parent::lexComment( ...$args );
 
 				// Twig moved the cursor past the closing tag, so drop it back off.
-				$raw = substr( $this->code, $start, $this->cursor - $start );
-				$end = strrpos( $raw, $this->options['tag_comment'][1] );
+				$raw     = substr( $this->code, $start, $this->cursor - $start );
+				$end     = strrpos( $raw, $this->options['tag_comment'][1] );
+				$comment = false === $end ? $raw : substr( $raw, 0, $end );
+
+				// Drop the marker of `-#}`, `~#}` or `##}`, but only when it touches the
+				// closing tag: in `e.g. - #}` the dash belongs to the comment.
+				$comment = (string) preg_replace( '/[-~#]\z/', '', $comment );
+				// Before Twig 3.29, `{##` is lexed as `{#` followed by a `#`.
+				$comment = (string) preg_replace( '/\A#/', '', $comment );
 
 				$this->comments[] = [
-					// Whatever is left of `-#}`, `~#}` or `##}` goes with the whitespace.
-					'comment' => trim( false === $end ? $raw : substr( $raw, 0, $end ), " \t\n\r\0\x0B-~#" ),
+					'comment' => trim( $comment ),
 					'lineno'  => $lineno,
 				];
 			}
