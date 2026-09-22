@@ -8,9 +8,35 @@ on:
       - master
   schedule:
     - cron:  '17 1 * * *' # Run every day on a seemly random time.
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
+  # The supported PHP range lives in composer.json, so read it from there rather than
+  # repeating it here. `lowest` comes out as `major.minor` (e.g. `8.1`), which is the
+  # shape the reusable workflow compares matrix entries against.
+  php-versions:
+    name: Resolve supported PHP versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      lowest: ${{ steps.range.outputs.lowest }}
+      highest: ${{ steps.range.outputs.highest }}
+      versions: ${{ steps.range.outputs.version }}
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Read the PHP range from composer.json
+        id: range
+        uses: WyriHaximus/github-action-composer-php-versions-in-range@b1da538007a030a09a7d257bd3881829a3544882 # v2.1.0
+
   test:
+    needs: php-versions
     uses: wp-cli/.github/.github/workflows/reusable-testing.yml@main
     with:
-        minimum-php: 7.2
+        minimum-php: ${{ needs.php-versions.outputs.lowest }}
