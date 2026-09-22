@@ -267,6 +267,12 @@ Feature: Generate a POT file of a WordPress project with Twig files
       {# translators: this should get extracted. #} {{ __( 'baba', 'foo-theme' ) }}
 
       {# translators: boo #} {# translators: this should get extracted too. #} {# some other comment #} {{__( 'bubu', 'foo-theme' ) }}
+
+      {#- translators: whitespace control. -#}
+      {{ __( 'trimmed', 'foo-theme' ) }}
+
+      {## translators: documentation comment. ##}
+      {{ __( 'documented', 'foo-theme' ) }}
       """
 
     When I run `wp i18n make-pot foo-theme`
@@ -290,6 +296,14 @@ Feature: Generate a POT file of a WordPress project with Twig files
     And the foo-theme/foo-theme.pot file should contain:
       """
       #. translators: this should get extracted too.
+      """
+    And the foo-theme/foo-theme.pot file should contain:
+      """
+      #. translators: whitespace control.
+      """
+    And the foo-theme/foo-theme.pot file should contain:
+      """
+      #. translators: documentation comment.
       """
 
   Scenario: Handle unknown tests
